@@ -1,0 +1,29 @@
+{% extends "cardboardapp/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="display-4">cardboardapp</h1>
+    <p class="lead">cardboardappで梱包箱を判定</p>
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">ログイン</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'cardboardapp:signup' %}" role="button">サインアップ</a>
+
+    {% if request.user.is_authenticated %}
+    <form action="{% url 'cardboardapp:predict' %}" method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <div class="custom-file">
+            {{ form.image }}
+            <!-- <label class="custom-file-label" for="customFile">
+                推定したいファイル選択
+            </label> -->
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">梱包箱を判定する</button>
+    </form>
+    {% else %}
+    {% endif %}
+</div>
+
+{% endblock %}

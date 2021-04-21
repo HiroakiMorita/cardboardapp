@@ -1,0 +1,41 @@
+version: '3'
+services:
+  api:
+    container_name: cardboard-api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    command: sh -c "cd /api/cardboard && python3 manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+      - 8001:8000
+    volumes:
+      - ./api:/api
+    depends_on:
+      - db
+      - front
+    tty: true
+  db:
+    container_name: cardboard-db
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: cardboard
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 3326:3306
+  front:
+      container_name: cardboard-front
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile
+      command: sh -c "cd /frontend/cardboard && npm start"
+      ports:
+      - "3000:3000"
+      volumes:
+      - ./frontend:/frontend
+      tty: true

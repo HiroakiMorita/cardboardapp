@@ -14,10 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from django.conf.urls import url, include
+
+# 使用しない
+# from django.conf import settings
+# from django.contrib.staticfiles.urls import static
+# from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+# from cardboardapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('cardboardapp/', include('cardboardapp.urls')),
-    path('cardboardapp/', include('django.contrib.auth.urls'))
+    path('cardboardapp/', include('django.contrib.auth.urls')),
+    url(r'^cardboardapp/', include('cardboardapp.urls')),
+
+    # 使用しない
+    # path('cardboardapp/', include('cardboardapp.urls')),
+    # url(r'^cardboardapp/', include(views.router.urls)),
 ]

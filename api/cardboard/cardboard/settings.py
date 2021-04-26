@@ -11,19 +11,20 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import environ
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 環境変数読み込み
+# # 環境変数読み込み
 env = environ.Env()
-env.read_env('.env')
+env.read_env(os.path.join(BASE_DIR,'.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+# # Quick-start development settings - unsuitable for production
+# # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -41,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cardboardapp.apps.CardboardappConfig',
-    'corsheaders',
+    # 'cardboardapp.apps.CardboardappConfig',
+    'corsheaders',  # CORS(オリジン間リソース共有)の設定をする、DjangoとReactは異なるオリジンで動作するので、その間のHTTPリクエストを許可する必要
+    'rest_framework', # react連携用(APIを作ってReactでそのAPIを叩く)
+    'cardboardapp',  # 確認
 ]
 
 MIDDLEWARE = [
@@ -146,3 +149,11 @@ LOGIN_URL = "login"
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000"
 ]
+
+
+# 誰にアクセスを許可するかを指定
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}

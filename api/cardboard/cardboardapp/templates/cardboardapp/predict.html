@@ -7,12 +7,20 @@
     <table class="table">
         <tbody>
             <tr>
+                <td>ファイル名</td>
+                <td>{{ photo_name }}</td>
+            </tr>
+            <tr>
+                <td>画像ファイル</td>
+                <td><img class='preview-img' src={{ photo_data }}></img></td>
+            </tr>
+            <tr>
                 <td>推定ラベル</td>
                 <td>{{ predicted }}</td>
             </tr>
             <tr>
                 <td>推定確率</td>
-                <td>{{ percentage }}%</td>
+                <td>{{ percentage }} %</td>
             </tr>
         </tbody>
     </table>

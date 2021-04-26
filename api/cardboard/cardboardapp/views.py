@@ -7,6 +7,10 @@ from django.views.generic import DetailView, UpdateView
 from .mixins import OnlyYouMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Photo
+# import django_filters
+from rest_framework import viewsets
+from . import serializers
+from .serializers import UserSerializer
 
 
 
@@ -29,6 +33,8 @@ def predict(request):
     photo = Photo(image=form.cleaned_data['image'])
     predicted, percentage = photo.predict()  # 予測の値を渡す
     context = {
+        'photo_name':photo.image.name,
+        'photo_data':photo.image_src(),  # 画像ファイルを渡す
         'predicted': predicted,
         'percentage': percentage,
     }
@@ -68,3 +74,9 @@ class UserUpdateView(OnlyYouMixin, UpdateView):
 
     def get_success_url(self):
         return resolve_url('cardboardapp:users_detail', pk=self.kwargs['pk'])
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_fields = ('id', 'username', 'email', 'first_name', 'last_name')
